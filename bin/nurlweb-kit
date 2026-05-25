@@ -84,7 +84,6 @@ cmd_new() {
 
     // ── Routes ────────────────────────────────────────────────────
     ( app_get app \`/\`
-        \\ HttpRequest req Params params → HttpResponse {
             ^ ( response_text 200 \`hello from $name!\\n\` )
         })
 
@@ -228,21 +227,16 @@ cmd_g_scaffold() {
 NUREF
 
     echo "Scaffold complete: controller, service, model, and tests for '$name'."
-    echo "Add this to main.nu:"
+    echo "Add these routes to main.nu (import controller first):"
     echo ""
-    echo "  ( kit_resources app \"/api/${name}s\" ( @ ResourceHandlers {"
-    echo "      prefix: \"/api/${name}s\""
-    echo "      index_fn: ${name}_index"
-    echo "      show_fn: ${name}_show"
-    echo "      create_fn: ${name}_create"
-    echo "      update_fn: ${name}_update"
-    echo "      delete_fn: ${name}_delete"
-    echo "      routes: RES_ALL"
-    echo "  }))"
+    echo "  $ `controllers/${name}.nu`"
+    echo ""
+    echo "  ( app_get app `/api/${name}s` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_index req p ) })"
+    echo "  ( app_get app `/api/${name}s/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_show req p ) })"
+    echo "  ( app_post app `/api/${name}s` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_create req p ) })"
+    echo "  ( app_put app `/api/${name}s/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_update req p ) })"
+    echo "  ( app_delete app `/api/${name}s/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_delete req p ) })"
 }
-
-# ── g controller ───────────────────────────────────────────────────────
-
 cmd_g_controller() {
     local name="$1"
 
@@ -380,7 +374,6 @@ cmd_check() {
         echo "  OK: main.nu exists"
     fi
 
-    echo ""
     if [ "$errors" -eq 0 ]; then
         echo "All checks passed."
         exit 0
