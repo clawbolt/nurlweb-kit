@@ -49,7 +49,9 @@ $ `stdlib/core/string.nu`
     : i r4 ( test_prefix_no_match_different )
     : i r5 ( test_prefix_shorter )
     : i r6 ( test_mount_creates_sub )
-    ?? & & & == r1 0 == r2 0 & == r3 0 == r4 0 == r5 0 == r6 0 {
+    : i ok1 & & == r1 0 == r2 0 == r3 0
+    : i ok2 & & == r4 0 == r5 0 == r6 0
+    ? & ok1 ok2 {
         ( nurl_print `all mount tests passed\n` )
         ^ 0
     } {
