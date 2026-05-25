@@ -94,11 +94,16 @@ $ `nurlweb-kit/config.nu`
     : i r7 ( test_config_get_b_false )
     : i r8 ( test_config_expect_missing )
     : i r9 ( test_config_merge )
-    ?? & & & & & & & & == r1 0 == r2 0 == r3 0 == r4 0 == r5 0 == r6 0 == r7 0 == r8 0 == r9 0 {
-        ( nurl_print `all config tests passed\n` )
+    : i ok1 & & == r1 0 == r2 0 == r3 0
+    : i ok2 & & == r4 0 == r5 0 == r6 0
+    : i ok3 & & == r7 0 == r8 0 == r9 0
+    ? & & ok1 ok2 ok3 {
+        ( nurl_print `all config tests passed
+` )
         ^ 0
     } {
-        ( nurl_print `some config tests failed\n` )
+        ( nurl_print `some config tests failed
+` )
         ^ 1
     }
 }

@@ -28,29 +28,33 @@ $ `stdlib/ext/http_full.nu`
 @ test_resources_all → i {
     : App app ( app_new `127.0.0.1` 0 )
     ( kit_resources app `/api/tests`
-        _test_index _test_show _test_create _test_update _test_delete )
+        \ HttpRequest r Params p → HttpResponse { ^ ( _test_index r p ) }
+        \ HttpRequest r Params p → HttpResponse { ^ ( _test_show r p ) }
+        \ HttpRequest r Params p → HttpResponse { ^ ( _test_create r p ) }
+        \ HttpRequest r Params p → HttpResponse { ^ ( _test_update r p ) }
+        \ HttpRequest r Params p → HttpResponse { ^ ( _test_delete r p ) } )
     ^ 0
 }
 
 // ── Test: individual kit_resource_index
 @ test_resource_index → i {
     : App app ( app_new `127.0.0.1` 0 )
-    ( kit_resource_index app `/api/posts` _test_index )
+    ( kit_resource_index app `/api/posts` \ HttpRequest r Params p → HttpResponse { ^ ( _test_index r p ) } )
     ^ 0
 }
 
 // ── Test: individual kit_resource_show
 @ test_resource_show → i {
     : App app ( app_new `127.0.0.1` 0 )
-    ( kit_resource_show app `/api/posts` _test_show )
+    ( kit_resource_show app `/api/posts` \ HttpRequest r Params p → HttpResponse { ^ ( _test_show r p ) } )
     ^ 0
 }
 
 // ── Test: read-only API (index + show)
 @ test_readonly_api → i {
     : App app ( app_new `127.0.0.1` 0 )
-    ( kit_resource_index app `/api/posts` _test_index )
-    ( kit_resource_show  app `/api/posts` _test_show )
+    ( kit_resource_index app `/api/posts` \ HttpRequest r Params p → HttpResponse { ^ ( _test_index r p ) } )
+    ( kit_resource_show  app `/api/posts` \ HttpRequest r Params p → HttpResponse { ^ ( _test_show r p ) } )
     ^ 0
 }
 
@@ -59,7 +63,9 @@ $ `stdlib/ext/http_full.nu`
     : i r2 ( test_resource_index )
     : i r3 ( test_resource_show )
     : i r4 ( test_readonly_api )
-    ?? & & & == r1 0 == r2 0 == r3 0 == r4 0 {
+    : i ok1 & & == r1 0 == r2 0 == r3 0
+    : i ok2 == r4 0
+    ? & ok1 ok2 {
         ( nurl_print `all controller tests passed\n` )
         ^ 0
     } {

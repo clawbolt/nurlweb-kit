@@ -49,7 +49,9 @@ $ `nurlweb-kit/logger.nu`
     : i r4 ( test_log_debug )
     : i r5 ( test_log_with_fields )
     : i r6 ( test_log_set_level )
-    ?? & & & == r1 0 == r2 0 & == r3 0 == r4 0 == r5 0 == r6 0 {
+    : i ok1 & & == r1 0 == r2 0 == r3 0
+    : i ok2 & & == r4 0 == r5 0 == r6 0
+    ? & ok1 ok2 {
         ( nurl_print `all logger tests passed\n` )
         ^ 0
     } {

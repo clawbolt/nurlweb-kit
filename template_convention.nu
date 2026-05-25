@@ -6,7 +6,7 @@
 // API:
 //   ( kit_template_auto s name ( Vec TemplateVar ) vars ) → !String IoErr
 
-$ `nurlweb/template.nu`
+$ `nurlweb-kit/view/template.nu`
 $ `stdlib/core/string.nu`
 
 // ── Auto-resolve ──────────────────────────────────────────────────────
