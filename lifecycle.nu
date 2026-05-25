@@ -1,4 +1,5 @@
 // nurlweb-kit/lifecycle.nu — App Lifecycle Hooks
+// Stability: experimental
 //
 // Simple fixed-slot design: 2 hooks per phase. Avoids nurlc vec_get
 // codegen limitation on closure element types. In practice, apps

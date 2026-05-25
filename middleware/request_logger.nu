@@ -1,4 +1,5 @@
 // nurlweb/logger.nu — Structured JSON Logging Middleware
+// Stability: stable
 //
 // Wraps the handler pipeline with structured JSON request logging.
 // Uses the same closure shape as http_middleware.nu — composes via app_use.

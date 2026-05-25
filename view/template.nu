@@ -1,4 +1,5 @@
 // nurlweb/template.nu — {{key}} template rendering + Layout/Include
+// Stability: experimental
 //
 // Substitutes `{{key}}` placeholders with values from a Vec<TemplateVar>.
 // Uses Vec<TemplateVar> (not Map) because NURL Map stores i64 only.

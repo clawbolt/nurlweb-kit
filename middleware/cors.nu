@@ -1,4 +1,5 @@
 // nurlweb/cors.nu — CORS middleware for development
+// Stability: stable
 //
 // Thin wrapper around stdlib with_cors_default. Adds permissive CORS
 // headers to every response and handles OPTIONS preflight.

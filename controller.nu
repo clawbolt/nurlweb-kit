@@ -1,4 +1,5 @@
 // nurlweb-kit/controller.nu — RESTful Resource Routing
+// Stability: stable
 //
 // kit_resources registers all 5 RESTful routes in one call.
 // Individual kit_resource_* functions for partial registration.

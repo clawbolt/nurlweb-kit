@@ -1,4 +1,5 @@
 // nurlweb/ws.nu — WebSocket Integration
+// Stability: experimental
 //
 // Ergonomic WebSocket server on a separate port. stdlib websocket.nu
 // is comprehensive but low-level; ws.nu provides accept-loop management

@@ -1,4 +1,5 @@
 // nurlweb/auth.nu — Auth Helpers (Ctx-style)
+// Stability: stable
 //
 // Ergonomic wrappers around stdlib/ext/http_auth.nu. Uses Ctx as the
 // unifying argument for LLM-friendly consistency.

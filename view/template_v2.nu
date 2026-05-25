@@ -1,4 +1,5 @@
 // nurlweb/template_v2.nu — v2 block directives (now merged into template.nu)
+// Stability: experimental
 //
 // Kept as a thin compatibility re-export. All implementations live in template.nu.
 // Prefer importing template.nu directly for new code.

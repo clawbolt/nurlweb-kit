@@ -1,4 +1,5 @@
 // nurlweb/compress.nu — Response compression middleware (gzip)
+// Stability: stable
 //
 // Wraps stdlib with_gzip to compress responses > 256 bytes.
 // Clients must send Accept-Encoding: gzip.

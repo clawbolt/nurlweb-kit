@@ -1,4 +1,5 @@
 // nurlweb/error.nu — Structured AppError + Error Middleware
+// Stability: stable
 //
 // Typed errors with HTTP status codes. Catch them in middleware with
 // the sentinel-header pattern (X-NurlWeb-Error) and render consistent

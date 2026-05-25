@@ -1,4 +1,5 @@
 // nurlweb/session.nu — Cookie + server-side session management
+// Stability: experimental
 //
 // Two layers:
 //   1. Cookie helpers — ergonomic wrapper around stdlib http_auth.nu

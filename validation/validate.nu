@@ -1,4 +1,5 @@
 // nurlweb/validate.nu — JSON Schema Validation
+// Stability: experimental
 //
 // Schema-driven JSON body validation: declare a schema struct, get a
 // parsed result or structured error. Think Zod for NURL.

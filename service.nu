@@ -1,4 +1,5 @@
 // nurlweb-kit/service.nu — Service Layer Convention
+// Stability: experimental
 //
 // Services are pure-function modules in services/*.nu. No DI container,
 // no registry — just import and call. Explicit parameter passing keeps

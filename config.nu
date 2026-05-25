@@ -1,4 +1,5 @@
 // nurlweb-kit/config.nu — Environment-Aware Config
+// Stability: experimental
 //
 // Startup-time config merging. Loads config/_default.nu as base,
 // then overlays config/_<env>.nu based on NURL_ENV (default: "dev").
@@ -154,7 +155,7 @@ $ `stdlib/std/fs.nu`
                 : s actual . cv type_hint
                 : i match ( nurl_str_eq actual expected_type )
                 ? != match 0 {
-                    ^ @ !v ConfigErr { T @ ConfigErr { ( nurl_str_cat3 `type mismatch: key ` key ` expected ` ) } }
+                    ^ @ !v ConfigErr { T @ ConfigErr { ( nurl_str_cat ( nurl_str_cat3 `type mismatch: key ` key ` expected ` ) expected_type ) } }
                 } {
                     ^ @ !v ConfigErr { T @ ConfigErr {} }
                 }

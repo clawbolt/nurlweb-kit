@@ -1,4 +1,5 @@
 // nurlweb-kit/logger.nu — Structured Logging
+// Stability: stable
 //
 // Single logging module with level-based filtering and structured fields.
 // Uses kit_ prefix to avoid collision with nurlweb/logger.nu.

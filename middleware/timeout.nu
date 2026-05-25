@@ -1,4 +1,5 @@
 // nurlweb-kit/timeout.nu — Request Timeout (v3 placeholder)
+// Stability: placeholder — no timeout is enforced; this is a pass-through stub
 //
 // True request-scoped deadlines require async/cancel support (planned
 // nurl v3). Until then, use server_new_with_timeout when creating the

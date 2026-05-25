@@ -1,4 +1,5 @@
 // nurlweb/ctx.nu — Rich request context
+// Stability: stable
 //
 // Provides a unified Ctx (request context) for type-safe param/query/header/
 // body extraction and one-line response shortcuts. Layered ON TOP of app.nu —
@@ -205,12 +206,18 @@ $ `stdlib/core/option.nu`
             : s dk_data ( string_data decoded_key )
             : String dk_copy ( string_data ( nurl_str_cat dk_data `` ) )
             ( string_free decoded_key )
-            : String val_slice ? > val_len 0 ( nurl_str_slice raw val_start val_len ) ( string_data ( nurl_str_cat `` `` ) )
-            : String decoded_val ( __url_decode ( string_data val_slice ) )
-            ( string_free val_slice )
-            : s dv_data ( string_data decoded_val )
-            : String dv_copy ( string_data ( nurl_str_cat dv_data `` ) )
-            ( string_free decoded_val )
+            : String dv_copy ? > val_len 0 {
+                : String val_slice ( nurl_str_slice raw val_start val_len )
+                : String decoded_val ( __url_decode ( string_data val_slice ) )
+                ( string_free val_slice )
+                : s dv_data ( string_data decoded_val )
+                : String dv_result ( string_data ( nurl_str_cat dv_data `` ) )
+                ( string_free decoded_val )
+                ^ dv_result
+            } {
+                : String empty_val ( string_with_cap 0 )
+                ^ empty_val
+            }
             // Push pair
             : UrlEncodedPair pair @ UrlEncodedPair { dk_copy dv_copy }
             ( vec_push [UrlEncodedPair] pairs pair )

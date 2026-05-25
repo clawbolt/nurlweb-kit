@@ -1,4 +1,5 @@
 // nurlweb-kit/app_mount.nu — Sub-App Middleware Isolation
+// Stability: experimental
 //
 // Creates a sub-app sharing the parent's Router with prefix-based
 // route registration. Routes are registered directly on the shared

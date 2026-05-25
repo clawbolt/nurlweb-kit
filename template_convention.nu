@@ -1,4 +1,5 @@
 // nurlweb-kit/template_convention.nu — Template Auto-Resolve
+// Stability: experimental
 //
 // Resolves template name to templates/{name}.html and renders using
 // nurlweb's existing template_file function.

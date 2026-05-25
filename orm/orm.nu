@@ -1,4 +1,5 @@
 // nurlweb/orm.nu — SQLite ORM-lite
+// Stability: experimental
 //
 // Wraps NURL's sqlite3 C builtins directly. Zero stdlib dependency beyond
 // string/vec utilities. All queries use parameterized binding — no SQL injection.

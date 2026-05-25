@@ -1,4 +1,5 @@
 // nurlweb/auth_jwt.nu — Signed token authentication (JWT-compatible subset)
+// Stability: stable
 //
 // Uses NURL's built-in nurl_hmac_sha256_hex for HMAC-SHA256 signing.
 // Token format: payload.hex_signature  (upgradeable to full JWT with base64url)

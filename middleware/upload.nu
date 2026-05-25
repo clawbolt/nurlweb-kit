@@ -1,4 +1,5 @@
 // nurlweb/upload.nu — File upload via multipart/form-data
+// Stability: stable
 //
 // Ergonomic wrapper around stdlib http_multipart.nu. Parses multipart
 // file uploads into a Vec<MultipartPart> that callers can scan for

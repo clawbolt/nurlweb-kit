@@ -1,4 +1,5 @@
 // nurlweb/static.nu — Static File Serving
+// Stability: stable
 //
 // Ergonomic wrappers around stdlib/ext/http_static.nu. Two layers:
 // ad-hoc serving with Ctx, and route registration convenience.
