@@ -65,3 +65,28 @@ $ `stdlib/core/string.nu`
     ( kit_resource_update a prefix h_update )
     ( kit_resource_delete a prefix h_delete )
 }
+
+// ── kit_resources_masked — selective registration via bitmask ──────────
+//
+// Use RES_INDEX | RES_SHOW | RES_CREATE | RES_UPDATE | RES_DELETE
+// constants to select which routes to register.
+//
+// Example: read-only API (index + show only)
+//   ( kit_resources_masked app `/api/posts`
+//       + RES_INDEX RES_SHOW   // = 3
+//       post_index post_show post_create post_update post_delete )
+//
+// Note: all 5 handlers must be passed; unused ones are ignored.
+
+@ kit_resources_masked App a s prefix i mask
+    ( @ HttpResponse HttpRequest Params ) h_index
+    ( @ HttpResponse HttpRequest Params ) h_show
+    ( @ HttpResponse HttpRequest Params ) h_create
+    ( @ HttpResponse HttpRequest Params ) h_update
+    ( @ HttpResponse HttpRequest Params ) h_delete → v {
+    ? != 0 & mask 1 { ( kit_resource_index  a prefix h_index ) } {}
+    ? != 0 & mask 2 { ( kit_resource_show   a prefix h_show ) } {}
+    ? != 0 & mask 4 { ( kit_resource_create a prefix h_create ) } {}
+    ? != 0 & mask 8 { ( kit_resource_update a prefix h_update ) } {}
+    ? != 0 & mask 16 { ( kit_resource_delete a prefix h_delete ) } {}
+}
