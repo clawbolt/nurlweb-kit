@@ -1,89 +1,67 @@
-// nurlweb-kit/controller.nu — Resource Routing with Bitmask Selection
+// nurlweb-kit/controller.nu — RESTful Resource Routing
 //
-// kit_resources registers RESTful routes in one call. Uses ResourceHandlers
-// struct to group 5 handler closures + a bitmask for route selection.
-//
-// Bitmask constants (defined in config.nu for central access):
-//   RES_INDEX  = 1  → GET    /prefix        → index_fn
-//   RES_SHOW   = 2  → GET    /prefix/:id     → show_fn
-//   RES_CREATE = 4  → POST   /prefix         → create_fn
-//   RES_UPDATE = 8  → PUT    /prefix/:id     → update_fn
-//   RES_DELETE = 16 → DELETE /prefix/:id     → delete_fn
-//   RES_ALL    = 31 → all routes
+// kit_resources registers all 5 RESTful routes in one call.
+// Individual kit_resource_* functions for partial registration.
 //
 // API:
-//   ( kit_resources App a ResourceHandlers rh ) → v
+//   ( kit_resources App a s prefix h_index h_show h_create h_update h_delete ) → v
+//   ( kit_resource_index  App a s prefix handler ) → v
+//   ( kit_resource_show   App a s prefix handler ) → v
+//   ( kit_resource_create App a s prefix handler ) → v
+//   ( kit_resource_update App a s prefix handler ) → v
+//   ( kit_resource_delete App a s prefix handler ) → v
+//
+// Usage:
+//   // All 5 routes at once
+//   ( kit_resources app '/api/users'
+//       user_index user_show user_create user_update user_delete )
+//
+//   // Read-only API (just index + show)
+//   ( kit_resource_index app '/api/posts' post_index )
+//   ( kit_resource_show  app '/api/posts' post_show )
+//
+// Handler signature: ( @ HttpResponse HttpRequest Params )
+// — same as nurlweb app_get/post/put/patch/delete.
 
 $ `nurlweb/app.nu`
+$ `stdlib/core/string.nu`
 
-// ── ResourceHandlers struct ────────────────────────────────────────────
+// ── Individual resource actions ───────────────────────────────────────
 
-: ResourceHandlers {
-    s prefix
-    ( @ HttpResponse HttpRequest Params ) index_fn
-    ( @ HttpResponse HttpRequest Params ) show_fn
-    ( @ HttpResponse HttpRequest Params ) create_fn
-    ( @ HttpResponse HttpRequest Params ) update_fn
-    ( @ HttpResponse HttpRequest Params ) delete_fn
-    i routes   // bitmask
+@ kit_resource_index App a s prefix ( @ HttpResponse HttpRequest Params ) handler → v {
+    ( app_get a prefix handler )
 }
 
-// ── Bitmask constants ─────────────────────────────────────────────────
+@ kit_resource_show App a s prefix ( @ HttpResponse HttpRequest Params ) handler → v {
+    : s route ( nurl_str_cat prefix `/:id` )
+    ( app_get a route handler )
+}
 
-@ RES_INDEX → i { ^ 1 }
-@ RES_SHOW → i { ^ 2 }
-@ RES_CREATE → i { ^ 4 }
-@ RES_UPDATE → i { ^ 8 }
-@ RES_DELETE → i { ^ 16 }
-@ RES_ALL → i { ^ 31 }
+@ kit_resource_create App a s prefix ( @ HttpResponse HttpRequest Params ) handler → v {
+    ( app_post a prefix handler )
+}
 
-// ── kit_resources ─────────────────────────────────────────────────────
+@ kit_resource_update App a s prefix ( @ HttpResponse HttpRequest Params ) handler → v {
+    : s route ( nurl_str_cat prefix `/:id` )
+    ( app_put a route handler )
+}
 
-// Registers RESTful routes based on bitmask. Each bit enables one route.
-@ kit_resources App a ResourceHandlers rh → v {
-    : s prefix . rh prefix
-    : i mask . rh routes
+@ kit_resource_delete App a s prefix ( @ HttpResponse HttpRequest Params ) handler → v {
+    : s route ( nurl_str_cat prefix `/:id` )
+    ( app_delete a route handler )
+}
 
-    // RES_INDEX: GET /prefix
-    ? & > 0 mask 0 {
-        : i bit ( & mask 1 )
-        ? != bit 0 {
-            ( app_get a prefix . rh index_fn )
-        } {}
-    } {}
+// ── kit_resources — all 5 routes in one call ──────────────────────────
 
-    // RES_SHOW: GET /prefix/:id
-    ? >= mask 2 {
-        : i bit ( & mask 2 )
-        ? != bit 0 {
-            : s show_route ( nurl_str_cat prefix `/:id` )
-            ( app_get a show_route . rh show_fn )
-        } {}
-    } {}
-
-    // RES_CREATE: POST /prefix
-    ? >= mask 4 {
-        : i bit ( & mask 4 )
-        ? != bit 0 {
-            ( app_post a prefix . rh create_fn )
-        } {}
-    } {}
-
-    // RES_UPDATE: PUT /prefix/:id
-    ? >= mask 8 {
-        : i bit ( & mask 8 )
-        ? != bit 0 {
-            : s update_route ( nurl_str_cat prefix `/:id` )
-            ( app_put a update_route . rh update_fn )
-        } {}
-    } {}
-
-    // RES_DELETE: DELETE /prefix/:id
-    ? >= mask 16 {
-        : i bit ( & mask mask 16 )
-        ? != bit 0 {
-            : s delete_route ( nurl_str_cat prefix `/:id` )
-            ( app_delete a delete_route . rh delete_fn )
-        } {}
-    } {}
+@ kit_resources App a s prefix
+    ( @ HttpResponse HttpRequest Params ) h_index
+    ( @ HttpResponse HttpRequest Params ) h_show
+    ( @ HttpResponse HttpRequest Params ) h_create
+    ( @ HttpResponse HttpRequest Params ) h_update
+    ( @ HttpResponse HttpRequest Params ) h_delete → v {
+    ( kit_resource_index  a prefix h_index )
+    ( kit_resource_show   a prefix h_show )
+    ( kit_resource_create a prefix h_create )
+    ( kit_resource_update a prefix h_update )
+    ( kit_resource_delete a prefix h_delete )
 }
