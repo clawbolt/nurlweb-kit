@@ -14,7 +14,7 @@
 
 set -eu
 
-VERSION="0.1.0.0"
+VERSION="0.2.0.0"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 KIT_DIR="$(dirname "$SCRIPT_DIR")"
 
@@ -53,7 +53,14 @@ cmd_new() {
     fi
 
     echo "Creating nurlweb-kit project: $name"
-    mkdir -p "$name"/{config,controllers,services,models,middleware,templates,tests}
+    mkdir -p \
+        "$name/config" \
+        "$name/controllers" \
+        "$name/services" \
+        "$name/models" \
+        "$name/middleware" \
+        "$name/templates" \
+        "$name/tests"
 
     # main.nu — entry point with config + lifecycle + example route
     cat > "$name/main.nu" <<NUREF
@@ -229,13 +236,13 @@ NUREF
     echo "Scaffold complete: controller, service, model, and tests for '$name'."
     echo "Add these routes to main.nu (import controller first):"
     echo ""
-    echo "  $ `controllers/${name}.nu`"
+    printf '  $ `controllers/%s.nu`\n' "$name"
     echo ""
-    echo "  ( app_get app `/api/${name}s` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_index req p ) })"
-    echo "  ( app_get app `/api/${name}s/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_show req p ) })"
-    echo "  ( app_post app `/api/${name}s` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_create req p ) })"
-    echo "  ( app_put app `/api/${name}s/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_update req p ) })"
-    echo "  ( app_delete app `/api/${name}s/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( ${name}_delete req p ) })"
+    printf '  ( app_get app `/api/%ss` \\ HttpRequest req Params p -> HttpResponse { ^ ( %s_index req p ) })\n' "$name" "$name"
+    printf '  ( app_get app `/api/%ss/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( %s_show req p ) })\n' "$name" "$name"
+    printf '  ( app_post app `/api/%ss` \\ HttpRequest req Params p -> HttpResponse { ^ ( %s_create req p ) })\n' "$name" "$name"
+    printf '  ( app_put app `/api/%ss/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( %s_update req p ) })\n' "$name" "$name"
+    printf '  ( app_delete app `/api/%ss/:id` \\ HttpRequest req Params p -> HttpResponse { ^ ( %s_delete req p ) })\n' "$name" "$name"
 }
 cmd_g_controller() {
     local name="$1"

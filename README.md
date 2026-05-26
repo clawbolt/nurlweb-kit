@@ -28,6 +28,10 @@ nurlweb-kit/bin/nurlweb-kit g scaffold post title:s body:s
 sh build.sh && ./app
 ```
 
+## Real Scenario
+
+See `examples/tasker/` for a project task tracker API that exercises task CRUD, nested comments, JSON validation, and real HTTP smoke checks.
+
 ## kit_resources
 
 Register 5 RESTful routes in one call:
